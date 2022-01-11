@@ -1,0 +1,19 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true, // Verificações de tipagem
+    "allowSyntheticDefaultImports": true, // import * as React from 'react'; => import React from 'react'
+    "esModuleInterop": true, // junto com o "allowSyntheticDefaultImports" para usar os imports
+    "isolatedModules": true, // ajuda que o código typescript seja entendido por outros transpiladores
+    "jsx": "react-native", // Qual o tipo de código JSX que será gerado
+    "lib": ["ES6", "ESNext"], // As tipagens default que o nosso código irá adicionar
+    "noEmit": true, //  não gerar códigos javascript como código fonte
+    "target": "ESNext", // Especifica a versão do ECMAScript
+    "skipLibCheck": true, // Pula a verificação de arquivos de declaração, isso economiza tempo de compilação.
+    "baseUrl": "src",
+    "paths": {
+      "~/*": ["*"] // root import
+    }
+  },
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
+}
