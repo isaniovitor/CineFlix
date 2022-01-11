@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "CineFlix",
+    "slug": "CineFlix",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "CineFlix"
+}
