@@ -11,9 +11,34 @@ export const CategoryName = styled(Text).attrs(({ theme }) => ({
   color: ${({ theme }) => theme.Colors.BLACK};
 `;
 
-export const ImageFilme = styled.Image`
+// renderFilm
+export const FilmContainer = styled.View`
+  flex: 1;
+  background: yellow;
+  border: 1px solid red;
+  justify-content: center;
+
+  margin: 5px;
+
+  flex-direction: row;
+`;
+
+export const ImageFilm = styled.Image`
   width: 100px;
   height: 150px;
 `;
 
-// renderFilm
+export const ResumeContainer = styled.View`
+  flex: 1;
+
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  padding: 20px 10px;
+`;
+
+export const FilmName = styled.Text`
+  font-size: 20px;
+`;
+
+export const FilmResume = styled.Text``;

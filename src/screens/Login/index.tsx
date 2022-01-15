@@ -1,14 +1,24 @@
 import { useNavigation } from '@react-navigation/core';
 import { values } from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 
+import type { AplicationState } from '~/@types/entities/AplicationState';
+import type { listCategoryFilmsProps } from '~/@types/entities/listCategoryFilms';
+import { GET_FILMS_WITH_FILTERS, SEARCH_FILMS } from '~/constants/api';
 import { HOME_SCREEN } from '~/constants/routes';
+import {
+  getFilmsAction,
+  getFilmsSuccessAction,
+} from '~/store/ducks/film/actions';
+import { getListCategoryFilmsAction } from '~/store/ducks/listCategoryFilms/actions';
 import { changeProfileAction } from '~/store/ducks/user/actions';
+
+import { FilmCategorys } from '../Home/utils/mock';
 
 import * as S from './styles';
 
@@ -17,6 +27,12 @@ const Login: React.FC = () => {
 
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
+  const { listFilms, loading } = useSelector(
+    (state: AplicationState) => state.film,
+  );
+  const { listCategoryFilms, loadingFilm } = useSelector(
+    (state: AplicationState) => state.listCategoryFilms,
+  );
 
   function handleLogin() {
     // dispatch(
@@ -27,6 +43,58 @@ const Login: React.FC = () => {
     // );
     navigation.navigate(HOME_SCREEN);
   }
+
+  useEffect(() => {
+    dispatch(
+      getListCategoryFilmsAction(
+        GET_FILMS_WITH_FILTERS,
+        '',
+        `with_genres=${FilmCategorys[0].id}`,
+        1,
+        FilmCategorys[0],
+      ),
+    );
+    dispatch(
+      getListCategoryFilmsAction(
+        GET_FILMS_WITH_FILTERS,
+        '',
+        `with_genres=${FilmCategorys[1].id}`,
+        1,
+        FilmCategorys[1],
+      ),
+    );
+    dispatch(
+      getListCategoryFilmsAction(
+        GET_FILMS_WITH_FILTERS,
+        '',
+        `with_genres=${FilmCategorys[3].id}`,
+        1,
+        FilmCategorys[3],
+      ),
+    );
+    dispatch(
+      getListCategoryFilmsAction(
+        GET_FILMS_WITH_FILTERS,
+        '',
+        `with_genres=${FilmCategorys[4].id}`,
+        1,
+        FilmCategorys[4],
+      ),
+    );
+
+    // FilmCategorys.map(itemCategory => {
+    //   console.tron.log('itemCategory', itemCategory);
+    //   return dispatch(
+    //     getListCategoryFilmsAction(
+    //       GET_FILMS_WITH_FILTERS,
+    //       '',
+    //       `with_genres=${itemCategory.id}`,
+    //       1,
+    //       itemCategory,
+    //     ),
+    //   );
+    // });
+  }, []);
 
   return (
     <KeyboardAvoidingView

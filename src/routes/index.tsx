@@ -13,7 +13,13 @@ import { ThemeProvider } from 'styled-components/native';
 import { Header } from '~/components/Header';
 
 import type { AplicationState } from '~/@types/entities/AplicationState';
-import { HOME_SCREEN, LOGIN_SCREEN, PROFILE_SCREEN } from '~/constants/routes';
+import {
+  FILM_DETAILS_SCREEN,
+  HOME_SCREEN,
+  LOGIN_SCREEN,
+  PROFILE_SCREEN,
+} from '~/constants/routes';
+import FilmDetails from '~/screens/FilmDetails';
 import Home from '~/screens/Home';
 import Login from '~/screens/Login';
 import Profile from '~/screens/Profile';
@@ -85,13 +91,13 @@ function RootStack() {
             }}
           />
 
-          {/* <Stack.Screen
-            name={}
-            component={}
+          <Stack.Screen
+            name={FILM_DETAILS_SCREEN}
+            component={FilmDetails}
             options={{
               header: props => <Header {...props} headerMenu />,
             }}
-          /> */}
+          />
         </Stack.Navigator>
         {/* )} */}
       </NavigationContainer>

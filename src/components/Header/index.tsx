@@ -76,6 +76,7 @@ export function Header({
                   placeholder="Digite uma categoria"
                   value={options.search}
                   onChangeText={options.setSearch}
+                  onSubmitEditing={options.handleSearchBooks}
                   width={100}
                 />
               </Sty.InputContainer>
