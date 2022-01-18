@@ -16,6 +16,12 @@ import {
   getFilmsSuccessAction,
 } from '~/store/ducks/film/actions';
 import { getListCategoryFilmsAction } from '~/store/ducks/listCategoryFilms/actions';
+import {
+  getListCategoryFilms,
+  getListCategoryFilmsSagas,
+} from '~/store/ducks/listCategoryFilms/sagas';
+import type { GetListCategoryFilmsProps } from '~/store/ducks/listCategoryFilms/types';
+import { listCategoryFilmsTypes } from '~/store/ducks/listCategoryFilms/types';
 import { changeProfileAction } from '~/store/ducks/user/actions';
 
 import { FilmCategorys } from '../Home/utils/mock';
@@ -45,55 +51,63 @@ const Login: React.FC = () => {
   }
 
   useEffect(() => {
-    dispatch(
-      getListCategoryFilmsAction(
-        GET_FILMS_WITH_FILTERS,
-        '',
-        `with_genres=${FilmCategorys[0].id}`,
-        1,
-        FilmCategorys[0],
-      ),
-    );
-    dispatch(
-      getListCategoryFilmsAction(
-        GET_FILMS_WITH_FILTERS,
-        '',
-        `with_genres=${FilmCategorys[1].id}`,
-        1,
-        FilmCategorys[1],
-      ),
-    );
-    dispatch(
-      getListCategoryFilmsAction(
-        GET_FILMS_WITH_FILTERS,
-        '',
-        `with_genres=${FilmCategorys[3].id}`,
-        1,
-        FilmCategorys[3],
-      ),
-    );
-    dispatch(
-      getListCategoryFilmsAction(
-        GET_FILMS_WITH_FILTERS,
-        '',
-        `with_genres=${FilmCategorys[4].id}`,
-        1,
-        FilmCategorys[4],
-      ),
-    );
+    // dispatch(
+    //   getListCategoryFilmsAction(
+    //     GET_FILMS_WITH_FILTERS,
+    //     '',
+    //     `with_genres=${FilmCategorys[0].id}`,
+    //     1,
+    //     FilmCategorys[0],
+    //   ),
+    // );
+    // dispatch(
+    //   getListCategoryFilmsAction(
+    //     GET_FILMS_WITH_FILTERS,
+    //     '',
+    //     `with_genres=${FilmCategorys[1].id}`,
+    //     1,
+    //     FilmCategorys[1],
+    //   ),
+    // );
+    // dispatch(
+    //   getListCategoryFilmsAction(
+    //     GET_FILMS_WITH_FILTERS,
+    //     '',
+    //     `with_genres=${FilmCategorys[3].id}`,
+    //     1,
+    //     FilmCategorys[3],
+    //   ),
+    // );
+    // dispatch(
+    //   getListCategoryFilmsAction(
+    //     GET_FILMS_WITH_FILTERS,
+    //     '',
+    //     `with_genres=${FilmCategorys[4].id}`,
+    //     1,
+    //     FilmCategorys[4],
+    //   ),
+    // // );
+    // path: GET_FILMS_WITH_FILTERS,
+    //     query: '',
+    //     filter: `with_genres=${itemCategory.id}`,
+    //     index: 1,
+    //     category: itemCategory,
 
-    // FilmCategorys.map(itemCategory => {
-    //   console.tron.log('itemCategory', itemCategory);
-    //   return dispatch(
-    //     getListCategoryFilmsAction(
-    //       GET_FILMS_WITH_FILTERS,
-    //       '',
-    //       `with_genres=${itemCategory.id}`,
-    //       1,
-    //       itemCategory,
-    //     ),
-    //   );
-    // });
+    FilmCategorys.map(itemCategory => {
+      console.tron.log('itemCategory', itemCategory);
+      const action = {
+        list: listCategoryFilms,
+        payload: {
+          path: GET_FILMS_WITH_FILTERS,
+          query: '',
+          filter: `with_genres=${itemCategory.id}`,
+          index: 1,
+          category: itemCategory,
+        },
+      };
+
+      getListCategoryFilmsSagas(action);
+    });
   }, []);
 
   return (

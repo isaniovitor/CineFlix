@@ -9,7 +9,7 @@ import * as S from './styles';
 interface Props {
   itemSelect: any;
   setItem: (item: any) => void;
-  genders: GenderProps[];
+  genders: any[];
   title?: string;
   disabled: boolean;
 }
@@ -28,16 +28,6 @@ export function Picker({
     setItem(item);
     setShowList(false);
   };
-
-  function renderGender({ gender }: GenderProps) {
-    return (
-      <S.Touchable key={gender.id} onPress={() => selectItem(gender)}>
-        <S.ContainerList>
-          <S.TitleItem>{gender.name}</S.TitleItem>
-        </S.ContainerList>
-      </S.Touchable>
-    );
-  }
 
   return (
     <S.Container>

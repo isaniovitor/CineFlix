@@ -20,21 +20,3 @@ export const searchFilms = async (
     return null;
   }
 };
-
-// export const searchFilmsWithFilters = async (
-//   query: string,
-//   filter: string,
-//   index: number,
-// ) => {
-//   try {
-//     const response = await request.get(
-//       GET_FILMS_WITH_FILTERS,
-//       query,
-//       filter,
-//       index,
-//     );
-//     return response;
-//   } catch {
-//     return null;
-//   }
-// };

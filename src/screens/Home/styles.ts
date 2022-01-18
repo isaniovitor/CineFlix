@@ -13,9 +13,7 @@ export const CategoryName = styled(Text).attrs(({ theme }) => ({
 
 // renderFilm
 export const FilmContainer = styled.View`
-  flex: 1;
-  background: yellow;
-  border: 1px solid red;
+  background: gray;
   justify-content: center;
 
   margin: 5px;

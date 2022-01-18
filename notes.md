@@ -31,6 +31,8 @@ export interface ResponseGenerator {
   statusText?: string;
 }
 
+https://www.npmjs.com/package/react-native-image-slider-box
+
 // map aq
 // map async
 function* getFilms(itemCategory: FilmCategoryProps) {

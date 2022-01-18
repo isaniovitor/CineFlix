@@ -2,19 +2,29 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { SliderBox } from 'react-native-image-slider-box';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { Picker } from '~/components/DropDown';
 import Indicator from '~/components/Indicator';
 
 import type { AplicationState } from '~/@types/entities/AplicationState';
+import type { FilmProps } from '~/@types/entities/Film';
 import type { FilmCategoryProps } from '~/@types/entities/FilmCategory';
+import type { listCategoryFilmsProps } from '~/@types/entities/listCategoryFilms';
 import filmBg from '~/assets/image.jpg';
-import { GET_FILMS_WITH_FILTERS, SEARCH_FILMS } from '~/constants/api';
+import {
+  GET_FILMS_WITH_FILTERS,
+  IMAGE_POSTER_URL,
+  SEARCH_FILMS,
+} from '~/constants/api';
 import { FILM_DETAILS_SCREEN, PROFILE_SCREEN } from '~/constants/routes';
+import request from '~/services/request';
 import {
   getFilmsAction,
   getFilmsSuccessAction,
 } from '~/store/ducks/film/actions';
+import type { ResponseGenerator } from '~/store/ducks/film/sagas';
 import { getListCategoryFilmsAction } from '~/store/ducks/listCategoryFilms/actions';
 
 import { FilmCategorys } from './utils/mock';
@@ -25,6 +35,18 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
+  const [popularFilmsImages, setPopularFilmsImages] = useState<string[] | []>(
+    [],
+  );
+  const [listCategoryFilter, setListCategoryFilter] = useState<
+    listCategoryFilmsProps[] | []
+  >([]);
+  const [currentCategoryFilter, setCurrentCategoryFilter] =
+    useState<FilmCategoryProps>({ id: -1, name: '' });
+  const [currentListCategoryFilms, setCurrentListCategoryFilms] = useState<
+    listCategoryFilmsProps[] | []
+  >([]);
+  const [popularFilms, setPopularFilms] = useState<FilmProps[] | []>([]);
   const [initialIdCategory, setInitialIdCategory] = useState(5);
   const { listFilms } = useSelector((state: AplicationState) => state.film);
   const { listCategoryFilms, loadingFilm } = useSelector(
@@ -39,21 +61,7 @@ const Home: React.FC = () => {
     navigation.navigate(FILM_DETAILS_SCREEN);
   }, [navigation]);
 
-  // tentar juntar
-  function dispatchListFilms(page: number) {
-    dispatch(
-      getListCategoryFilmsAction(
-        GET_FILMS_WITH_FILTERS,
-        '',
-        `with_genres=${FilmCategorys[initialIdCategory].id}`,
-        page,
-        FilmCategorys[initialIdCategory],
-      ),
-    );
-
-    setInitialIdCategory(initialIdCategory + 1);
-  }
-
+  // ta errado
   function dispatchFilms(page: number, category: FilmCategoryProps) {
     dispatch(
       getListCategoryFilmsAction(
@@ -68,11 +76,54 @@ const Home: React.FC = () => {
     setInitialIdCategory(initialIdCategory + 1);
   }
 
+  console.tron.log('listCategoryFilter', listCategoryFilter[0]);
+
+  function filterCategory(category: FilmCategoryProps) {
+    const newListCategoryFilter = listCategoryFilter;
+    const listCategory = listCategoryFilms.find(
+      CategoryFilms => CategoryFilms.category.id === category.id,
+    );
+
+    if (newListCategoryFilter.includes(listCategory)) {
+      newListCategoryFilter.pop(listCategory);
+    } else {
+      newListCategoryFilter.push(listCategory);
+    }
+
+    if (listCategoryFilter.length > 0) {
+      setCurrentListCategoryFilms(listCategoryFilter);
+    } else {
+      setCurrentListCategoryFilms(listCategoryFilms);
+    }
+
+    setListCategoryFilter(newListCategoryFilter);
+  }
+
+  async function getPopular() {
+    try {
+      const urlImages: string[] = [];
+      const response: ResponseGenerator = await request.get(
+        'movie/popular',
+        '',
+        '',
+        1,
+      );
+
+      response.data.results.map(film =>
+        urlImages.push(`${IMAGE_POSTER_URL}${film.backdrop_path}`),
+      );
+
+      setPopularFilmsImages(urlImages);
+    } catch {
+      console.tron.log('deu ruim');
+    }
+  }
+
   const handleSearchBooks = useCallback(async () => {
     if (search === '') {
       dispatch(getFilmsSuccessAction([]));
     } else {
-      dispatch(getFilmsAction(SEARCH_FILMS, `query=${search}`, '', 1));
+      dispatch(getFilmsAction(SEARCH_FILMS, `query=${search}`, '', 0));
     }
   }, [dispatch, search]);
 
@@ -85,6 +136,10 @@ const Home: React.FC = () => {
       handleSearchBooks,
     });
   }, [navigation, handleProfile, search, handleSearchBooks]);
+
+  useEffect(() => {
+    getPopular();
+  }, []);
 
   // renders
   function renderFilm(item: any) {
@@ -100,12 +155,12 @@ const Home: React.FC = () => {
                 : filmBg
             }
           />
-          <S.ResumeContainer>
+          {/* <S.ResumeContainer>
             <S.FilmName>{item.item.original_title.substring(0, 25)}</S.FilmName>
             <S.FilmResume>
               {item.item.overview.substring(0, 70)}...
             </S.FilmResume>
-          </S.ResumeContainer>
+          </S.ResumeContainer> */}
         </S.FilmContainer>
       </TouchableOpacity>
     );
@@ -121,6 +176,7 @@ const Home: React.FC = () => {
 
         <FlatList
           horizontal
+          // showsHorizontalScrollIndicator={false}
           data={item.item.films}
           extraData={item.item.films}
           renderItem={film => (
@@ -154,24 +210,49 @@ const Home: React.FC = () => {
     <View style={{ flex: 1 }}>
       {listFilms.length > 0 ? (
         <FlatList
+          key="_"
+          numColumns={3}
           style={{ padding: 20 }}
+          contentContainerStyle={{
+            alignItems: 'center',
+          }}
           data={listFilms}
           extraData={listFilms}
           renderItem={renderFilm}
-          keyExtractor={(itemCategory: any, index: any) => index}
+          keyExtractor={(itemFilm: any, index: any) => index}
         />
       ) : (
         <>
           <FlatList
+            key="#"
+            ListHeaderComponent={
+              <>
+                <SliderBox
+                  images={popularFilmsImages}
+                  dotStyle={{ display: 'none' }}
+                  autoplay
+                  circleLoop
+                  ImageComponentStyle={{ padding: 20 }}
+                  // dotColor={white}
+                  onCurrentImagePressed={handleDetails}
+                />
+                <Picker
+                  itemSelect={currentCategoryFilter}
+                  setItem={category => {
+                    filterCategory(category);
+                    setCurrentCategoryFilter(category);
+                  }}
+                  genders={FilmCategorys}
+                  disabled={false}
+                />
+              </>
+            }
+            showsVerticalScrollIndicator={false}
             style={{ padding: 20 }}
-            data={listCategoryFilms}
-            extraData={listCategoryFilms}
+            data={currentListCategoryFilms}
+            extraData={currentListCategoryFilms}
             renderItem={renderCategory}
             keyExtractor={(itemCategory: any, index: any) => index}
-            refreshing={loadingFilm}
-            onRefresh={() => dispatchListFilms(1)}
-            onEndReached={() => dispatchListFilms(1)}
-            onEndReachedThreshold={0.1}
           />
         </>
       )}

@@ -3,6 +3,8 @@ import { all, takeLatest, call, put, select } from 'redux-saga/effects';
 import type { AplicationState } from '~/@types/entities/AplicationState';
 import type { listCategoryFilmsProps } from '~/@types/entities/listCategoryFilms';
 import { searchFilms } from '~/services/film';
+import request from '~/services/request';
+import store from '~/store';
 
 import {
   getListCategoryFilmsErrorAction,
@@ -20,10 +22,11 @@ export interface ResponseGenerator {
   statusText?: string;
 }
 
-function* getListCategoryFilmsSagas(action: GetListCategoryFilmsProps) {
+// ainda da pra usar como sagar?
+export async function getListCategoryFilmsSagas(action: any) {
   try {
-    const response: ResponseGenerator = yield call(
-      searchFilms,
+    // search?
+    const response: ResponseGenerator = await request.get(
       action.payload.path,
       action.payload.query,
       action.payload.filter,
@@ -31,9 +34,7 @@ function* getListCategoryFilmsSagas(action: GetListCategoryFilmsProps) {
     );
 
     if (response.status >= 200 && response.status < 300) {
-      const { listCategoryFilms } = yield select(
-        (state: AplicationState) => state.listCategoryFilms,
-      );
+      const listCategoryFilms = action.list;
       const newlistCategoryFilms = listCategoryFilms;
       const isIntoList = listCategoryFilms.find(
         CategoryFilms =>
@@ -56,20 +57,67 @@ function* getListCategoryFilmsSagas(action: GetListCategoryFilmsProps) {
         newlistCategoryFilms.push(newCategoryFilms);
       }
 
-      yield put(getListCategoryFilmsSuccessAction(newlistCategoryFilms));
+      store.dispatch(getListCategoryFilmsSuccessAction(newlistCategoryFilms));
     } else {
-      yield put(getListCategoryFilmsErrorAction());
+      store.dispatch(getListCategoryFilmsErrorAction());
     }
   } catch {
-    yield put(getListCategoryFilmsErrorAction());
+    store.dispatch(getListCategoryFilmsErrorAction());
   }
 }
 
-export default function* watchSaga() {
-  yield all([
-    takeLatest(
-      listCategoryFilmsTypes.GET_LISTCATEGORYFILMS,
-      getListCategoryFilmsSagas,
-    ),
-  ]);
-}
+// export function* getListCategoryFilmsSagas(action: any) {
+//   try {
+//     console.tron.log('caiu');
+
+//     const response: ResponseGenerator = yield call(
+//       searchFilms,
+//       action.payload.path,
+//       action.payload.query,
+//       action.payload.filter,
+//       action.payload.index,
+//     );
+
+//     if (response.status >= 200 && response.status < 300) {
+//       const { listCategoryFilms } = yield select(
+//         (state: AplicationState) => state.listCategoryFilms,
+//       );
+//       const newlistCategoryFilms = listCategoryFilms;
+//       const isIntoList = listCategoryFilms.find(
+//         CategoryFilms =>
+//           CategoryFilms.category.id === action.payload.category.id,
+//       );
+
+//       if (isIntoList) {
+//         newlistCategoryFilms[newlistCategoryFilms.indexOf(isIntoList)] = {
+//           category: action.payload.category,
+//           films: [...isIntoList.films, ...response.data.results],
+//           currentPage: action.payload.index + 1,
+//         };
+//       } else {
+//         const newCategoryFilms: listCategoryFilmsProps = {
+//           category: action.payload.category,
+//           films: response.data.results,
+//           currentPage: action.payload.index,
+//         };
+
+//         newlistCategoryFilms.push(newCategoryFilms);
+//       }
+
+//       yield put(getListCategoryFilmsSuccessAction(newlistCategoryFilms));
+//     } else {
+//       yield put(getListCategoryFilmsErrorAction());
+//     }
+//   } catch {
+//     yield put(getListCategoryFilmsErrorAction());
+//   }
+// }
+
+// export default function* watchSaga() {
+//   yield all([
+//     takeLatest(
+//       listCategoryFilmsTypes.GET_LISTCATEGORYFILMS,
+//       getListCategoryFilmsSagas,
+//     ),
+//   ]);
+// }
