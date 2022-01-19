@@ -12,38 +12,41 @@ import Input from '~/components/Input';
 
 import type { AplicationState } from '~/@types/entities/AplicationState';
 import type { GenderProps } from '~/@types/entities/Gender';
+import type { DataProps } from '~/@types/entities/User';
 import { GENDERS } from '~/constants/gender';
 import { HOME_SCREEN, LOGIN_SCREEN } from '~/constants/routes';
-import { changeProfileAction } from '~/store/ducks/user/actions';
+import { getListCategoryFilmsSuccessAction } from '~/store/ducks/listCategoryFilms/actions';
+import { changeProfileAction, logoutAction } from '~/store/ducks/user/actions';
 
 import { validationSchema } from './validations';
 
 import * as S from './styles';
 
-interface DataProps {
-  username: string;
-  password: string;
-  email: string;
-  birthdate: string;
-  gender: GenderProps;
-  userimage: string;
-}
-
 const Profile: React.FC = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
-  const { username, userimage, email, password, birthdate, gender } =
-    useSelector((state: AplicationState) => state.user);
+  const {
+    username,
+    lastname,
+    userimage,
+    email,
+    password,
+    birthdate,
+    address,
+    gender,
+  } = useSelector((state: AplicationState) => state.user);
 
   function changeData(data: DataProps) {
     dispatch(
       changeProfileAction(
         data.username,
+        data.lastname,
         data.password,
         data.userimage,
         data.email,
-        data.birthdate,
+        data.address,
+        data.username,
         data.gender,
       ),
     );
@@ -54,10 +57,12 @@ const Profile: React.FC = () => {
     useFormik({
       initialValues: {
         username,
+        lastname,
         password,
         email,
         userimage,
         birthdate,
+        address,
         gender,
       },
       validationSchema,
@@ -116,13 +121,13 @@ const Profile: React.FC = () => {
     setVisible(false);
   };
 
-  // Modal
   function showModal() {
     setVisible(true);
   }
 
   function logout() {
-    navigation.navigate(LOGIN_SCREEN);
+    dispatch(getListCategoryFilmsSuccessAction([]));
+    dispatch(logoutAction());
   }
 
   return (
@@ -158,7 +163,7 @@ const Profile: React.FC = () => {
             <Input
               title="Nome"
               iconType="ionicons"
-              placeholder="Digite seu username"
+              placeholder="Digite seu nome"
               value={values.username}
               error={errors.username}
               onChangeText={handleChange('username')}
@@ -167,16 +172,17 @@ const Profile: React.FC = () => {
             <Input
               title="Sobrenome"
               iconType="ionicons"
-              placeholder="Digite seu username"
-              value={values.username}
-              error={errors.username}
-              // onChangeText={handleChange('username')}
+              placeholder="Digite seu sobrenome"
+              value={values.lastname}
+              error={errors.lastname}
+              onChangeText={handleChange('lastname')}
               width={100}
             />
             <Input
               title="Email"
               placeholder="Digite sua email"
               value={values.email}
+              error={errors.email}
               onChangeText={handleChange('email')}
               width={100}
             />
@@ -190,16 +196,18 @@ const Profile: React.FC = () => {
             />
             <Input
               title="Data Nascimento"
-              placeholder="Digite sua senha"
+              placeholder="Digite sua data nascimento"
               value={values.birthdate}
+              error={errors.birthdate}
               onChangeText={handleChange('birthdate')}
               width={100}
             />
             <Input
               title="Endereço"
-              placeholder="Digite sua senha"
-              // value={values.birthdate}
-              // onChangeText={handleChange('birthdate')}
+              placeholder="Digite sua endereço"
+              value={values.address}
+              error={errors.address}
+              onChangeText={handleChange('address')}
               width={100}
             />
             <Picker

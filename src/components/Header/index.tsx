@@ -71,6 +71,7 @@ export function Header({
               </Sty.ButtonLeft>
               <Sty.InputContainer>
                 <Input
+                  color="white"
                   iconLeft="search"
                   iconType="ionicons"
                   placeholder="Digite uma categoria"

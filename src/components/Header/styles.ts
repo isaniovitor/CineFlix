@@ -128,7 +128,6 @@ export const Title = styled(Text).attrs(({ theme }) => ({
 `;
 
 export const InputContainer = styled.View`
-  width: 100%;
-
   flex: 0.85;
+  /* width: 50%; */
 `;

@@ -7,6 +7,7 @@ import type { AplicationState } from '~/@types/entities/AplicationState';
 import * as S from './styles';
 
 interface InputProps {
+  color?: string;
   label?: string;
   width: number;
   title?: string;
@@ -19,6 +20,7 @@ interface InputProps {
 }
 
 const Input: React.FC<TextInputProps & InputProps> = ({
+  color,
   label,
   title,
   iconRight,
@@ -36,16 +38,34 @@ const Input: React.FC<TextInputProps & InputProps> = ({
       {title && <S.Title>{title}</S.Title>}
 
       <S.ContainerInputIcon>
-        {iconLeft && <S.IconInput iconType={iconType} name={iconLeft} />}
+        {iconLeft && (
+          <>
+            {color ? (
+              <S.WhiteIconInput iconType={iconType} name={iconLeft} />
+            ) : (
+              <S.IconInput iconType={iconType} name={iconLeft} />
+            )}
+          </>
+        )}
         <S.Container labelSameLine={labelSameLine}>
           {label && <S.Label>{label}</S.Label>}
           <S.ContainerInput error={error} labelSameLine={labelSameLine}>
-            <S.Input
-              {...rest}
-              autoCapitalize="none"
-              customFontSize={12 + delta}
-              iconRight={iconRight}
-            />
+            {color ? (
+              <S.WhiteInput
+                {...rest}
+                autoCapitalize="none"
+                customFontSize={12 + delta}
+                iconRight={iconRight}
+              />
+            ) : (
+              <S.Input
+                {...rest}
+                autoCapitalize="none"
+                customFontSize={12 + delta}
+                iconRight={iconRight}
+              />
+            )}
+
             {iconRight && (
               <S.Touchable onPress={() => actionIcon && actionIcon()}>
                 <S.IconInput iconType={iconType} name={iconRight} />

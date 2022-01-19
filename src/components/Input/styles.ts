@@ -21,6 +21,10 @@ interface ContainerInputProps {
   labelSameLine?: boolean;
 }
 
+interface ColorProps {
+  color?: string;
+}
+
 interface TextInputProps {
   customFontSize: number;
   iconRight?: string;
@@ -39,7 +43,6 @@ export const ContainerInputIcon = styled.View`
   width: 100%;
   padding: 0 15px;
   border-radius: 50px;
-  /* background: ${({ theme }) => theme.Colors.BACKGROUND_WHITE}; */
   border-color: ${({ theme }) => theme.Colors.BORDER_INPUT};
   border-bottom-width: 1px;
 `;
@@ -93,6 +96,19 @@ export const Input = styled.TextInput.attrs<TextInputProps>(
   margin-left: 10px;
 `;
 
+export const WhiteInput = styled.TextInput.attrs<TextInputProps>(
+  ({ customFontSize, theme }) => ({
+    fontSize: customFontSize,
+    placeholderTextColor: theme.Colors.WHITE,
+  }),
+)<TextInputProps>`
+  width: ${({ iconRight }) => (iconRight ? 90 : 100)}%;
+  /* font-size: 12px; */
+  color: ${({ theme }) => theme.Colors.WHITE};
+  margin-bottom: ${vs(10)}px;
+  margin-left: 10px;
+`;
+
 export const ErrorMessage = styled(Text)`
   color: ${({ theme }) => theme.Colors.ERROR};
 
@@ -107,5 +123,14 @@ export const IconInput = styled(Icon).attrs<IconInputProps>(
     size: 24,
     type: iconType,
     color: theme.Colors.MEDIUM_GRAY,
+  }),
+)<IconInputProps>``;
+
+export const WhiteIconInput = styled(Icon).attrs<IconInputProps>(
+  ({ theme, name, iconType }) => ({
+    name,
+    size: 24,
+    type: iconType,
+    color: theme.Colors.WHITE,
   }),
 )<IconInputProps>``;

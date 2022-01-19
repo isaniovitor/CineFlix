@@ -49,6 +49,7 @@ const Home: React.FC = () => {
     listCategoryFilmsProps[] | []
   >(listCategoryFilms);
 
+  console.tron.log('listCategoryFilms', listCategoryFilms);
   const handleProfile = useCallback(() => {
     navigation.navigate(PROFILE_SCREEN);
   }, [navigation]);
@@ -61,7 +62,6 @@ const Home: React.FC = () => {
     setVisible(true);
   }
 
-  // ta errado
   function getFilms(page: number, category: FilmCategoryProps) {
     const action = {
       list: listCategoryFilms,
@@ -142,14 +142,6 @@ const Home: React.FC = () => {
     getPopular();
   }, []);
 
-  // useEffect(() => {
-  //   if (listCategoryFilter.length > 0) {
-  //     setCurrentListCategoryFilms(listCategoryFilter);
-  //   } else {
-  //     setCurrentListCategoryFilms(listCategoryFilms);
-  //   }
-  // }, [listCategoryFilms, listCategoryFilter, setCurrentListCategoryFilms]);
-
   return (
     <S.Container>
       {listFilms.length > 0 ? (
@@ -162,8 +154,8 @@ const Home: React.FC = () => {
           }}
           data={listFilms}
           extraData={listFilms}
-          renderItem={({ film }) => (
-            <Film CurrentFilm={film} handleFilm={handleDetails} />
+          renderItem={film => (
+            <Film CurrentFilm={film.item} handleFilm={handleDetails} />
           )}
           keyExtractor={(itemFilm: any, index: any) => index}
         />

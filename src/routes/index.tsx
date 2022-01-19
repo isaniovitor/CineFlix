@@ -30,67 +30,49 @@ function RootStack() {
     // creteTheme?
     <ThemeProvider theme={createTheme(theme)}>
       <NavigationContainer>
-        {/* {islogged ? (
-          <Drawer.Navigator
+        {islogged ? (
+          <Stack.Navigator
             initialRouteName={HOME_SCREEN}
-            drawerContent={props => <DrawerContent {...props} />}
-            screenOptions={{
-              headerShown: false,
-            }}
+            screenOptions={{ gestureEnabled: false, animation: 'fade' }}
           >
-            <Drawer.Screen
+            <Stack.Screen
               name={HOME_SCREEN}
               component={Home}
               options={{
                 header: props => <Header {...props} headerMenu />,
               }}
             />
-            <Drawer.Screen
+
+            <Stack.Screen
               name={PROFILE_SCREEN}
               component={Profile}
               options={{
                 header: props => <Header {...props} headerMenu />,
               }}
             />
-          </Drawer.Navigator>
-        ) : ( */}
-        <Stack.Navigator
-          initialRouteName={LOGIN_SCREEN}
-          screenOptions={{ gestureEnabled: false, animation: 'fade' }}
-        >
-          <StackLogin.Screen
-            name={LOGIN_SCREEN}
-            component={Login}
-            options={{
-              header: props => <Header {...props} headerMenu={false} />,
-            }}
-          />
 
-          <Stack.Screen
-            name={HOME_SCREEN}
-            component={Home}
-            options={{
-              header: props => <Header {...props} headerMenu />,
-            }}
-          />
-
-          <Stack.Screen
-            name={PROFILE_SCREEN}
-            component={Profile}
-            options={{
-              header: props => <Header {...props} headerMenu />,
-            }}
-          />
-
-          <Stack.Screen
-            name={FILM_DETAILS_SCREEN}
-            component={FilmDetails}
-            options={{
-              header: props => <Header {...props} headerMenu />,
-            }}
-          />
-        </Stack.Navigator>
-        {/* )} */}
+            <Stack.Screen
+              name={FILM_DETAILS_SCREEN}
+              component={FilmDetails}
+              options={{
+                header: props => <Header {...props} headerMenu />,
+              }}
+            />
+          </Stack.Navigator>
+        ) : (
+          <Stack.Navigator
+            initialRouteName={LOGIN_SCREEN}
+            screenOptions={{ gestureEnabled: false, animation: 'fade' }}
+          >
+            <StackLogin.Screen
+              name={LOGIN_SCREEN}
+              component={Login}
+              options={{
+                header: props => <Header {...props} headerMenu={false} />,
+              }}
+            />
+          </Stack.Navigator>
+        )}
       </NavigationContainer>
     </ThemeProvider>
   );
