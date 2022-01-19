@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 
 import Button from '~/components/Button';
@@ -15,20 +15,17 @@ const FilmDetails: React.FC = () => {
   const { currentFilm }: FilmProps = route.params;
 
   function handleWatchMovie() {
-    // ...
+    // ??
   }
 
-  console.tron.log('currentFilm', currentFilm);
+  useEffect(() => {
+    navigation.setOptions({
+      enableNavigation: true,
+    });
+  }, [navigation]);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignContent: 'center',
-        justifyContent: 'center',
-        padding: 20,
-      }}
-    >
+    <S.Container>
       <S.Hero>
         <S.PosterFilm
           source={
@@ -65,7 +62,7 @@ const FilmDetails: React.FC = () => {
           actionBtn={() => handleWatchMovie()}
         />
       </S.Recommendations>
-    </View>
+    </S.Container>
   );
 };
 

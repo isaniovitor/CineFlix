@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Picker } from '~/components/DropDown';
 import Indicator from '~/components/Indicator';
+import Select from '~/components/Picker';
 
 import type { AplicationState } from '~/@types/entities/AplicationState';
 import type { FilmProps } from '~/@types/entities/Film';
@@ -35,23 +36,22 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [popularFilms, setPopularFilms] = useState<FilmProps[] | []>([]);
+  const [initialIdCategory, setInitialIdCategory] = useState(5);
   const [popularFilmsImages, setPopularFilmsImages] = useState<string[] | []>(
     [],
   );
   const [listCategoryFilter, setListCategoryFilter] = useState<
     listCategoryFilmsProps[] | []
   >([]);
-  const [currentCategoryFilter, setCurrentCategoryFilter] =
-    useState<FilmCategoryProps>({ id: -1, name: '' });
-  const [currentListCategoryFilms, setCurrentListCategoryFilms] = useState<
-    listCategoryFilmsProps[] | []
-  >([]);
-  const [popularFilms, setPopularFilms] = useState<FilmProps[] | []>([]);
-  const [initialIdCategory, setInitialIdCategory] = useState(5);
   const { listFilms } = useSelector((state: AplicationState) => state.film);
   const { listCategoryFilms, loadingFilm } = useSelector(
     (state: AplicationState) => state.listCategoryFilms,
   );
+  const [currentListCategoryFilms, setCurrentListCategoryFilms] = useState<
+    listCategoryFilmsProps[] | []
+  >(listCategoryFilms);
 
   const handleProfile = useCallback(() => {
     navigation.navigate(PROFILE_SCREEN);
@@ -59,6 +59,10 @@ const Home: React.FC = () => {
 
   function handleDetails(film: FilmProps) {
     navigation.navigate(FILM_DETAILS_SCREEN, { currentFilm: film });
+  }
+
+  function showModal() {
+    setVisible(true);
   }
 
   // ta errado
@@ -75,8 +79,6 @@ const Home: React.FC = () => {
 
     setInitialIdCategory(initialIdCategory + 1);
   }
-
-  console.tron.log('listCategoryFilter', listCategoryFilter[0]);
 
   function filterCategory(category: FilmCategoryProps) {
     const newListCategoryFilter = listCategoryFilter;
@@ -147,7 +149,7 @@ const Home: React.FC = () => {
   function renderFilm(item: any) {
     return (
       <TouchableOpacity onPress={() => handleDetails(item.item)}>
-        <S.FilmContainer>
+        <View style={{ paddingRight: 5, paddingBottom: 5 }}>
           <S.ImageFilm
             source={
               item.item.backdrop_path
@@ -157,7 +159,7 @@ const Home: React.FC = () => {
                 : filmBg
             }
           />
-        </S.FilmContainer>
+        </View>
       </TouchableOpacity>
     );
   }
@@ -175,21 +177,7 @@ const Home: React.FC = () => {
           // showsHorizontalScrollIndicator={false}
           data={item.item.films}
           extraData={item.item.films}
-          renderItem={film => (
-            <TouchableOpacity onPress={() => handleDetails(film.item)}>
-              <View style={{ paddingRight: 5 }}>
-                <S.ImageFilm
-                  source={
-                    film.item.backdrop_path
-                      ? {
-                          uri: `https://image.tmdb.org/t/p/original/${film.item.backdrop_path}`,
-                        }
-                      : filmBg
-                  }
-                />
-              </View>
-            </TouchableOpacity>
-          )}
+          renderItem={renderFilm}
           keyExtractor={(itemCategory: any, index: any) => index}
           refreshing={loadingFilm}
           onRefresh={() =>
@@ -205,7 +193,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <S.Container>
       {listFilms.length > 0 ? (
         <FlatList
           key="_"
@@ -236,15 +224,19 @@ const Home: React.FC = () => {
                     handleDetails(popularFilms[index])
                   }
                 />
-                <Picker
-                  itemSelect={currentCategoryFilter}
-                  setItem={category => {
-                    filterCategory(category);
-                    setCurrentCategoryFilter(category);
-                  }}
-                  genders={FilmCategorys}
-                  disabled={false}
-                />
+
+                <S.FilterConteiner onPress={() => showModal()}>
+                  <Select
+                    visible={visible}
+                    setVisible={setVisible}
+                    setItem={category => {
+                      filterCategory(category);
+                    }}
+                    list={FilmCategorys}
+                    listedItem={listCategoryFilter}
+                  />
+                  <S.FilterIcon />
+                </S.FilterConteiner>
               </>
             }
             showsVerticalScrollIndicator={false}
@@ -256,7 +248,7 @@ const Home: React.FC = () => {
           />
         </>
       )}
-    </View>
+    </S.Container>
   );
 };
 

@@ -3,12 +3,31 @@ import styled from 'styled-components/native';
 import Icon from '~/components/Icon';
 import Text from '~/components/Text';
 
+export const Container = styled.View`
+  flex: 1;
+  background: ${({ theme }) => theme.Colors.BACKGROUND_WHITE};
+`;
+
+export const FilterIcon = styled(Icon).attrs(({ theme }) => ({
+  type: 'ionicons',
+  name: 'filter',
+  color: theme.Colors.FILTER_BUTTON,
+  size: 30,
+}))``;
+
+export const FilterConteiner = styled.TouchableOpacity`
+  padding-top: 10px;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: flex-end;
+`;
+
 // renderCategory
 export const CategoryName = styled(Text).attrs(({ theme }) => ({
   fontSize: 20,
 }))`
   font-weight: bold;
-  color: ${({ theme }) => theme.Colors.BLACK};
+  color: ${({ theme }) => theme.Colors.BLACK_TO_WHITE_TEXT};
 `;
 
 // renderFilm

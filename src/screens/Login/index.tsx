@@ -51,50 +51,7 @@ const Login: React.FC = () => {
   }
 
   useEffect(() => {
-    // dispatch(
-    //   getListCategoryFilmsAction(
-    //     GET_FILMS_WITH_FILTERS,
-    //     '',
-    //     `with_genres=${FilmCategorys[0].id}`,
-    //     1,
-    //     FilmCategorys[0],
-    //   ),
-    // );
-    // dispatch(
-    //   getListCategoryFilmsAction(
-    //     GET_FILMS_WITH_FILTERS,
-    //     '',
-    //     `with_genres=${FilmCategorys[1].id}`,
-    //     1,
-    //     FilmCategorys[1],
-    //   ),
-    // );
-    // dispatch(
-    //   getListCategoryFilmsAction(
-    //     GET_FILMS_WITH_FILTERS,
-    //     '',
-    //     `with_genres=${FilmCategorys[3].id}`,
-    //     1,
-    //     FilmCategorys[3],
-    //   ),
-    // );
-    // dispatch(
-    //   getListCategoryFilmsAction(
-    //     GET_FILMS_WITH_FILTERS,
-    //     '',
-    //     `with_genres=${FilmCategorys[4].id}`,
-    //     1,
-    //     FilmCategorys[4],
-    //   ),
-    // // );
-    // path: GET_FILMS_WITH_FILTERS,
-    //     query: '',
-    //     filter: `with_genres=${itemCategory.id}`,
-    //     index: 1,
-    //     category: itemCategory,
-
     FilmCategorys.map(itemCategory => {
-      console.tron.log('itemCategory', itemCategory);
       const action = {
         list: listCategoryFilms,
         payload: {

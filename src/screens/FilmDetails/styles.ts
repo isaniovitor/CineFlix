@@ -3,6 +3,14 @@ import styled from 'styled-components/native';
 import Icon from '~/components/Icon';
 import Text from '~/components/Text';
 
+export const Container = styled.View`
+  flex: 1;
+  justify-content: center;
+
+  padding: 20px;
+  background: ${({ theme }) => theme.Colors.BACKGROUND_WHITE};
+`;
+
 // hero
 export const Hero = styled.View`
   background: yellow;
@@ -24,7 +32,7 @@ export const FilmName = styled(Text).attrs(({ theme }) => ({
 }))`
   padding: 10px 0px 5px 0;
   font-weight: bold;
-  color: ${({ theme }) => theme.Colors.BLACK};
+  color: ${({ theme }) => theme.Colors.BLACK_TO_WHITE_TEXT};
 `;
 
 export const NumbersConteiner = styled.View`
@@ -42,27 +50,27 @@ export const TextNumbers = styled(Text).attrs(({ theme }) => ({
   fontSize: 14,
 }))`
   padding-left: 3px;
-  color: ${({ theme }) => theme.Colors.BLACK};
+  color: ${({ theme }) => theme.Colors.BLACK_TO_WHITE_TEXT};
 `;
 
 export const StarIcon = styled(Icon).attrs(({ theme }) => ({
   type: 'ionicons',
   name: 'star',
-  color: theme.Colors.BLACK,
+  color: theme.Colors.BLACK_TO_WHITE_TEXT,
   size: 15,
 }))``;
 
 export const CalendarIcon = styled(Icon).attrs(({ theme }) => ({
   type: 'ionicons',
   name: 'calendar',
-  color: theme.Colors.BLACK,
+  color: theme.Colors.BLACK_TO_WHITE_TEXT,
   size: 15,
 }))``;
 
 export const PersonIcon = styled(Icon).attrs(({ theme }) => ({
   type: 'ionicons',
   name: 'person',
-  color: theme.Colors.BLACK,
+  color: theme.Colors.BLACK_TO_WHITE_TEXT,
   size: 15,
 }))``;
 
@@ -71,7 +79,7 @@ export const overview = styled(Text).attrs(({ theme }) => ({
 }))`
   text-align: justify;
   padding: 10px 0;
-  color: ${({ theme }) => theme.Colors.BLACK};
+  color: ${({ theme }) => theme.Colors.BLACK_TO_WHITE_TEXT};
 `;
 
 // recomedation / similars

@@ -165,6 +165,15 @@ const Profile: React.FC = () => {
               width={100}
             />
             <Input
+              title="Sobrenome"
+              iconType="ionicons"
+              placeholder="Digite seu username"
+              value={values.username}
+              error={errors.username}
+              // onChangeText={handleChange('username')}
+              width={100}
+            />
+            <Input
               title="Email"
               placeholder="Digite sua email"
               value={values.email}
@@ -186,7 +195,13 @@ const Profile: React.FC = () => {
               onChangeText={handleChange('birthdate')}
               width={100}
             />
-
+            <Input
+              title="Endereço"
+              placeholder="Digite sua senha"
+              // value={values.birthdate}
+              // onChangeText={handleChange('birthdate')}
+              width={100}
+            />
             <Picker
               title="Gênero"
               itemSelect={values.gender}
