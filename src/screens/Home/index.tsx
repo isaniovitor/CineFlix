@@ -57,9 +57,9 @@ const Home: React.FC = () => {
     navigation.navigate(PROFILE_SCREEN);
   }, [navigation]);
 
-  const handleDetails = useCallback(() => {
-    navigation.navigate(FILM_DETAILS_SCREEN);
-  }, [navigation]);
+  function handleDetails(film: FilmProps) {
+    navigation.navigate(FILM_DETAILS_SCREEN, { currentFilm: film });
+  }
 
   // ta errado
   function dispatchFilms(page: number, category: FilmCategoryProps) {
@@ -90,6 +90,7 @@ const Home: React.FC = () => {
       newListCategoryFilter.push(listCategory);
     }
 
+    // useeffect?
     if (listCategoryFilter.length > 0) {
       setCurrentListCategoryFilms(listCategoryFilter);
     } else {
@@ -114,6 +115,7 @@ const Home: React.FC = () => {
       );
 
       setPopularFilmsImages(urlImages);
+      setPopularFilms(response.data.results);
     } catch {
       console.tron.log('deu ruim');
     }
@@ -144,7 +146,7 @@ const Home: React.FC = () => {
   // renders
   function renderFilm(item: any) {
     return (
-      <TouchableOpacity onPress={() => handleDetails()}>
+      <TouchableOpacity onPress={() => handleDetails(item.item)}>
         <S.FilmContainer>
           <S.ImageFilm
             source={
@@ -155,12 +157,6 @@ const Home: React.FC = () => {
                 : filmBg
             }
           />
-          {/* <S.ResumeContainer>
-            <S.FilmName>{item.item.original_title.substring(0, 25)}</S.FilmName>
-            <S.FilmResume>
-              {item.item.overview.substring(0, 70)}...
-            </S.FilmResume>
-          </S.ResumeContainer> */}
         </S.FilmContainer>
       </TouchableOpacity>
     );
@@ -180,17 +176,19 @@ const Home: React.FC = () => {
           data={item.item.films}
           extraData={item.item.films}
           renderItem={film => (
-            <View style={{ paddingRight: 5 }}>
-              <S.ImageFilm
-                source={
-                  film.item.backdrop_path
-                    ? {
-                        uri: `https://image.tmdb.org/t/p/original/${film.item.backdrop_path}`,
-                      }
-                    : filmBg
-                }
-              />
-            </View>
+            <TouchableOpacity onPress={() => handleDetails(film.item)}>
+              <View style={{ paddingRight: 5 }}>
+                <S.ImageFilm
+                  source={
+                    film.item.backdrop_path
+                      ? {
+                          uri: `https://image.tmdb.org/t/p/original/${film.item.backdrop_path}`,
+                        }
+                      : filmBg
+                  }
+                />
+              </View>
+            </TouchableOpacity>
           )}
           keyExtractor={(itemCategory: any, index: any) => index}
           refreshing={loadingFilm}
@@ -234,7 +232,9 @@ const Home: React.FC = () => {
                   circleLoop
                   ImageComponentStyle={{ padding: 20 }}
                   // dotColor={white}
-                  onCurrentImagePressed={handleDetails}
+                  onCurrentImagePressed={index =>
+                    handleDetails(popularFilms[index])
+                  }
                 />
                 <Picker
                   itemSelect={currentCategoryFilter}
