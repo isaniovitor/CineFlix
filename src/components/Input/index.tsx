@@ -41,10 +41,7 @@ const Input: React.FC<TextInputProps & InputProps> = ({
           {label && <S.Label>{label}</S.Label>}
           <S.ContainerInput error={error} labelSameLine={labelSameLine}>
             <S.Input
-              // inlineImageLeft='search_icon'
               {...rest}
-              // returnKeyLabel="search"
-              // returnKeyType="search"
               autoCapitalize="none"
               customFontSize={12 + delta}
               iconRight={iconRight}

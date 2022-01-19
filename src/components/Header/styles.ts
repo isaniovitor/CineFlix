@@ -4,9 +4,6 @@ import styled from 'styled-components/native';
 import Icon from '~/components/Icon';
 import Text from '~/components/Text';
 
-// import NewText from '~/components/text';
-
-// import { s, sfs, vs } from '~/utils/responsibleText';
 interface Props {
   headerMenu: boolean;
 }
@@ -20,7 +17,6 @@ export const Container = styled.View<Props>`
   justify-content: center;
 `;
 
-// ??
 export const StatusBar = styled.StatusBar.attrs(({ theme }) => ({
   backgroundColor: theme.Colors.BACKGROUND_RED,
 }))``;
@@ -57,17 +53,12 @@ export const AceContainer = styled.View`
 `;
 
 export const AceContainerLeft = styled.View`
-  /* padding-top: 5px; */
-
   flex: 0.6;
   flex-direction: row;
   justify-content: flex-start;
-  /* align-items: center; */
 `;
 
 export const AceContainerRight = styled.View`
-  /* padding-top: 5px; */
-
   flex: 0.4;
   flex-direction: row;
   justify-content: space-between;
@@ -83,7 +74,6 @@ export const IconChangeTheme = styled(Icon).attrs(({ theme }) => ({
 export const SizeText = styled.Text`
   font-size: 20px;
   font-weight: bold
-  /* font-stretch: bold; */
   color: ${({ theme }) => theme.Colors.BACKGROUND_BUTTON_WHITE};
 `;
 
@@ -139,10 +129,6 @@ export const Title = styled(Text).attrs(({ theme }) => ({
 
 export const InputContainer = styled.View`
   width: 100%;
-  /* background-color: ${({ theme }) => theme.Colors.BACKGROUND}; */
 
   flex: 0.85;
-  /* flex-direction: row;
-  align-items: center; */
-  /* justify-content: space-between; */
 `;

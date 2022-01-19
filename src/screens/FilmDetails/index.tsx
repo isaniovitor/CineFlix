@@ -1,6 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/core';
 import React, { useEffect } from 'react';
-import { Text, View } from 'react-native';
 
 import Button from '~/components/Button';
 
@@ -56,11 +55,7 @@ const FilmDetails: React.FC = () => {
         <S.overview>{currentFilm.overview}</S.overview>
       </S.Description>
       <S.Recommendations>
-        <Button
-          label="Assitir"
-          // disabled={!dirty}
-          actionBtn={() => handleWatchMovie()}
-        />
+        <Button label="Assitir" actionBtn={() => handleWatchMovie()} />
       </S.Recommendations>
     </S.Container>
   );

@@ -13,7 +13,7 @@ export default {
   ) {
     const url = `/${path}?api_key=${KEY}${query ? `&${query}` : ''}${
       filter ? `&${filter}` : ''
-    }&language=${language}${page ? `&page=${page}` : ''};`;
+    }&language=${language}${page ? `&page=${page}` : ''}`;
 
     return api.get(url);
   },

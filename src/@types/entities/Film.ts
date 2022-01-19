@@ -16,6 +16,4 @@ export interface FilmProps {
   video: boolean;
   vote_average: number;
   vote_count: number;
-  // details: FilmDetailsProps;
-  // images: FilmImagesProps;
 }

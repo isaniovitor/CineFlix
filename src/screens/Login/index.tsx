@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/core';
-import { values } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,21 +7,9 @@ import Button from '~/components/Button';
 import Input from '~/components/Input';
 
 import type { AplicationState } from '~/@types/entities/AplicationState';
-import type { listCategoryFilmsProps } from '~/@types/entities/listCategoryFilms';
-import { GET_FILMS_WITH_FILTERS, SEARCH_FILMS } from '~/constants/api';
+import { GET_FILMS_WITH_FILTERS } from '~/constants/api';
 import { HOME_SCREEN } from '~/constants/routes';
-import {
-  getFilmsAction,
-  getFilmsSuccessAction,
-} from '~/store/ducks/film/actions';
-import { getListCategoryFilmsAction } from '~/store/ducks/listCategoryFilms/actions';
-import {
-  getListCategoryFilms,
-  getListCategoryFilmsSagas,
-} from '~/store/ducks/listCategoryFilms/sagas';
-import type { GetListCategoryFilmsProps } from '~/store/ducks/listCategoryFilms/types';
-import { listCategoryFilmsTypes } from '~/store/ducks/listCategoryFilms/types';
-import { changeProfileAction } from '~/store/ducks/user/actions';
+import { getListCategoryFilmsSagas } from '~/store/ducks/listCategoryFilms/sagas';
 
 import { FilmCategorys } from '../Home/utils/mock';
 
@@ -30,13 +17,9 @@ import * as S from './styles';
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
-
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
-  const { listFilms, loading } = useSelector(
-    (state: AplicationState) => state.film,
-  );
-  const { listCategoryFilms, loadingFilm } = useSelector(
+  const { listCategoryFilms } = useSelector(
     (state: AplicationState) => state.listCategoryFilms,
   );
 

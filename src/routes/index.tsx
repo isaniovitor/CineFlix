@@ -1,13 +1,7 @@
-import {
-  createDrawerNavigator,
-  useDrawerStatus,
-} from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useSelector } from 'react-redux';
-
-// import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 
 import { Header } from '~/components/Header';
@@ -25,15 +19,12 @@ import Login from '~/screens/Login';
 import Profile from '~/screens/Profile';
 import { createTheme } from '~/utils/theme';
 
-const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const StackLogin = createNativeStackNavigator();
 
 function RootStack() {
   const { islogged } = useSelector((state: AplicationState) => state.user);
   const { theme } = useSelector((state: AplicationState) => state.theme);
-
-  // const isDrawerOpen = useDrawerStatus() === 'open';
 
   return (
     // creteTheme?

@@ -1,19 +1,16 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { SliderBox } from 'react-native-image-slider-box';
+import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Picker } from '~/components/DropDown';
-import Indicator from '~/components/Indicator';
-import Select from '~/components/Picker';
+import Category from '~/components/Category';
+import Film from '~/components/Film';
+import HomeHero from '~/components/HomeHero';
 
 import type { AplicationState } from '~/@types/entities/AplicationState';
 import type { FilmProps } from '~/@types/entities/Film';
 import type { FilmCategoryProps } from '~/@types/entities/FilmCategory';
 import type { listCategoryFilmsProps } from '~/@types/entities/listCategoryFilms';
-import filmBg from '~/assets/image.jpg';
 import {
   GET_FILMS_WITH_FILTERS,
   IMAGE_POSTER_URL,
@@ -26,7 +23,7 @@ import {
   getFilmsSuccessAction,
 } from '~/store/ducks/film/actions';
 import type { ResponseGenerator } from '~/store/ducks/film/sagas';
-import { getListCategoryFilmsAction } from '~/store/ducks/listCategoryFilms/actions';
+import { getListCategoryFilmsSagas } from '~/store/ducks/listCategoryFilms/sagas';
 
 import { FilmCategorys } from './utils/mock';
 
@@ -38,7 +35,6 @@ const Home: React.FC = () => {
   const [search, setSearch] = useState('');
   const [visible, setVisible] = useState(false);
   const [popularFilms, setPopularFilms] = useState<FilmProps[] | []>([]);
-  const [initialIdCategory, setInitialIdCategory] = useState(5);
   const [popularFilmsImages, setPopularFilmsImages] = useState<string[] | []>(
     [],
   );
@@ -66,18 +62,19 @@ const Home: React.FC = () => {
   }
 
   // ta errado
-  function dispatchFilms(page: number, category: FilmCategoryProps) {
-    dispatch(
-      getListCategoryFilmsAction(
-        GET_FILMS_WITH_FILTERS,
-        '',
-        `with_genres=${category.id}`,
-        page,
+  function getFilms(page: number, category: FilmCategoryProps) {
+    const action = {
+      list: listCategoryFilms,
+      payload: {
+        path: GET_FILMS_WITH_FILTERS,
+        query: '',
+        filter: `with_genres=${category.id}`,
+        index: page,
         category,
-      ),
-    );
+      },
+    };
 
-    setInitialIdCategory(initialIdCategory + 1);
+    getListCategoryFilmsSagas(action);
   }
 
   function filterCategory(category: FilmCategoryProps) {
@@ -145,52 +142,13 @@ const Home: React.FC = () => {
     getPopular();
   }, []);
 
-  // renders
-  function renderFilm(item: any) {
-    return (
-      <TouchableOpacity onPress={() => handleDetails(item.item)}>
-        <View style={{ paddingRight: 5, paddingBottom: 5 }}>
-          <S.ImageFilm
-            source={
-              item.item.backdrop_path
-                ? {
-                    uri: `https://image.tmdb.org/t/p/original/${item.item.backdrop_path}`,
-                  }
-                : filmBg
-            }
-          />
-        </View>
-      </TouchableOpacity>
-    );
-  }
-
-  function renderCategory(item: any) {
-    return (
-      <View style={{ paddingTop: 10 }}>
-        <S.CategoryName>{item.item.category.name}</S.CategoryName>
-        {/* <TouchableOpacity onPress={() => handleDetails()}>
-          <S.ImageFilm source={film} />
-        </TouchableOpacity> */}
-
-        <FlatList
-          horizontal
-          // showsHorizontalScrollIndicator={false}
-          data={item.item.films}
-          extraData={item.item.films}
-          renderItem={renderFilm}
-          keyExtractor={(itemCategory: any, index: any) => index}
-          refreshing={loadingFilm}
-          onRefresh={() =>
-            dispatchFilms(item.item.currentPage, item.item.category)
-          }
-          onEndReached={() =>
-            dispatchFilms(item.item.currentPage, item.item.category)
-          }
-          onEndReachedThreshold={0.1}
-        />
-      </View>
-    );
-  }
+  // useEffect(() => {
+  //   if (listCategoryFilter.length > 0) {
+  //     setCurrentListCategoryFilms(listCategoryFilter);
+  //   } else {
+  //     setCurrentListCategoryFilms(listCategoryFilms);
+  //   }
+  // }, [listCategoryFilms, listCategoryFilter, setCurrentListCategoryFilms]);
 
   return (
     <S.Container>
@@ -204,49 +162,40 @@ const Home: React.FC = () => {
           }}
           data={listFilms}
           extraData={listFilms}
-          renderItem={renderFilm}
+          renderItem={({ film }) => (
+            <Film CurrentFilm={film} handleFilm={handleDetails} />
+          )}
           keyExtractor={(itemFilm: any, index: any) => index}
         />
       ) : (
-        <>
-          <FlatList
-            key="#"
-            ListHeaderComponent={
-              <>
-                <SliderBox
-                  images={popularFilmsImages}
-                  dotStyle={{ display: 'none' }}
-                  autoplay
-                  circleLoop
-                  ImageComponentStyle={{ padding: 20 }}
-                  // dotColor={white}
-                  onCurrentImagePressed={index =>
-                    handleDetails(popularFilms[index])
-                  }
-                />
-
-                <S.FilterConteiner onPress={() => showModal()}>
-                  <Select
-                    visible={visible}
-                    setVisible={setVisible}
-                    setItem={category => {
-                      filterCategory(category);
-                    }}
-                    list={FilmCategorys}
-                    listedItem={listCategoryFilter}
-                  />
-                  <S.FilterIcon />
-                </S.FilterConteiner>
-              </>
-            }
-            showsVerticalScrollIndicator={false}
-            style={{ padding: 20 }}
-            data={currentListCategoryFilms}
-            extraData={currentListCategoryFilms}
-            renderItem={renderCategory}
-            keyExtractor={(itemCategory: any, index: any) => index}
-          />
-        </>
+        <FlatList
+          key="#"
+          ListHeaderComponent={
+            <HomeHero
+              images={popularFilmsImages}
+              visible={visible}
+              setVisible={setVisible}
+              imagesLinks={popularFilms}
+              onCurrentImage={handleDetails}
+              modal={showModal}
+              filter={filterCategory}
+              list={FilmCategorys}
+              listedItem={listCategoryFilter}
+            />
+          }
+          showsVerticalScrollIndicator={false}
+          style={{ padding: 20 }}
+          data={currentListCategoryFilms}
+          extraData={currentListCategoryFilms}
+          renderItem={category => (
+            <Category
+              CurrentCategory={category.item}
+              onRefre={getFilms}
+              OnPressFilm={handleDetails}
+            />
+          )}
+          keyExtractor={(itemCategory: any, index: any) => index}
+        />
       )}
     </S.Container>
   );
