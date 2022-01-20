@@ -2,10 +2,10 @@ import styled from 'styled-components/native';
 
 import Text from '../Text';
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
   flex: 1;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
 
   border-radius: 6px;
   padding: 5px;

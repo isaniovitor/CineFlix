@@ -41,6 +41,9 @@ const Home: React.FC = () => {
   const [listCategoryFilter, setListCategoryFilter] = useState<
     listCategoryFilmsProps[] | []
   >([]);
+  const { filmCategory } = useSelector(
+    (state: AplicationState) => state.filmCategory,
+  );
   const { listFilms } = useSelector((state: AplicationState) => state.film);
   const { listCategoryFilms, loadingFilm } = useSelector(
     (state: AplicationState) => state.listCategoryFilms,
@@ -49,7 +52,7 @@ const Home: React.FC = () => {
     listCategoryFilmsProps[] | []
   >(listCategoryFilms);
 
-  console.tron.log('listCategoryFilms', listCategoryFilms);
+  console.tron.log('filmCategory', filmCategory);
   const handleProfile = useCallback(() => {
     navigation.navigate(PROFILE_SCREEN);
   }, [navigation]);
@@ -171,7 +174,7 @@ const Home: React.FC = () => {
               onCurrentImage={handleDetails}
               modal={showModal}
               filter={filterCategory}
-              list={FilmCategorys}
+              list={filmCategory}
               listedItem={listCategoryFilter}
             />
           }

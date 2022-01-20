@@ -41,6 +41,7 @@ export function Select({
         <S.Container
           style={{ backgroundColor: Colors.BACKGROUND_BUTTON_WHITE }}
         >
+          {/* flatlist? */}
           {list.map(category => {
             const listCategory = listedItem.find(
               listedCategory => listedCategory.category.id === category.id,

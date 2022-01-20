@@ -1,12 +1,5 @@
-import {
-  GET_FILMS_WITH_FILTERS,
-  GET_IMAGE_FILMS,
-  SEARCH_FILMS,
-} from '~/constants/api';
-
 import request from '../request';
 
-// passar aq filter
 export const searchFilms = async (
   path: string,
   query: string,

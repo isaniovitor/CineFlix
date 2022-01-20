@@ -4,3 +4,4 @@ export const SEARCH_FILMS = 'search/movie';
 export const GET_IMAGE_FILMS = '/movie';
 export const IMAGE_POSTER_URL = 'https://image.tmdb.org/t/p/original';
 export const GET_FILMS_WITH_FILTERS = 'discover/movie';
+export const GET_FILMCATEGORY = 'genre/movie/list';

@@ -9,8 +9,9 @@ import Input from '~/components/Input';
 
 import type { AplicationState } from '~/@types/entities/AplicationState';
 import type { DataProps } from '~/@types/entities/User';
-import { GET_FILMS_WITH_FILTERS } from '~/constants/api';
+import { GET_FILMCATEGORY, GET_FILMS_WITH_FILTERS } from '~/constants/api';
 import { HOME_SCREEN } from '~/constants/routes';
+import { getFilmCategoryAction } from '~/store/ducks/filmCategory/actions';
 import { getListCategoryFilmsSagas } from '~/store/ducks/listCategoryFilms/sagas';
 import { changeProfileAction } from '~/store/ducks/user/actions';
 
@@ -25,6 +26,9 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { listCategoryFilms } = useSelector(
     (state: AplicationState) => state.listCategoryFilms,
+  );
+  const { filmCategory } = useSelector(
+    (state: AplicationState) => state.filmCategory,
   );
 
   function handleLogin(data: DataProps) {
@@ -60,6 +64,9 @@ const Login: React.FC = () => {
   });
 
   useEffect(() => {
+    dispatch(getFilmCategoryAction(GET_FILMCATEGORY, '', '', ''));
+
+    // mudar aq
     FilmCategorys.map(itemCategory => {
       const action = {
         list: listCategoryFilms,
