@@ -16,13 +16,13 @@ interface Props {
   listedItem: [] | listCategoryFilmsProps[];
 }
 
-export function Select({
+const Select: React.FC<Props> = ({
   visible,
   setVisible,
   setItem,
   list,
   listedItem,
-}: Props) {
+}) => {
   const hideModal = () => setVisible(false);
   const { Colors } = useContext(ThemeContext);
 
@@ -38,9 +38,7 @@ export function Select({
         onDismiss={hideModal}
         contentContainerStyle={S.containerModal}
       >
-        <S.Container
-          style={{ backgroundColor: Colors.BACKGROUND_BUTTON_WHITE }}
-        >
+        <S.Container style={{ backgroundColor: Colors.BACKGROUND_WHITE }}>
           {/* flatlist? */}
           {list.map(category => {
             const listCategory = listedItem.find(
@@ -48,7 +46,11 @@ export function Select({
             );
 
             return (
-              <S.Button key={category.id} onPress={() => selectItem(category)}>
+              <S.Button
+                style={{ backgroundColor: Colors.BACKGROUND_BUTTON_WHITE }}
+                key={category.id}
+                onPress={() => selectItem(category)}
+              >
                 <S.TextButton
                   style={{
                     color: listCategory ? Colors.BACKGROUND_RED : Colors.BLACK,
@@ -63,51 +65,6 @@ export function Select({
       </Modal>
     </Portal>
   );
-}
+};
 
 export default Select;
-
-// import type { PickerProps } from '@react-native-picker/picker';
-// import { Picker } from '@react-native-picker/picker';
-// import React, { useContext } from 'react';
-// import { ThemeContext } from 'styled-components/native';
-
-// import { FilmCategorys } from '~/screens/Home/utils/mock';
-
-// import * as S from './styles';
-
-// interface SelectProps {
-//   title: string;
-// }
-
-// const Select: React.FC<PickerProps & SelectProps> = ({
-//   title,
-//   ...rest
-// }: SelectProps) => {
-//   const { Colors } = useContext(ThemeContext);
-
-//   return (
-//     <S.Container>
-//       {/* <S.IconSelect /> */}
-//       <S.ContainerSelect>
-//         <S.SelectPicker {...rest} dropdownIconColor={Colors.ICON_COLOR}>
-//           {FilmCategorys.map(gender => {
-//             return (
-//               <Picker.Item
-//                 label={gender.name}
-//                 value={gender.id}
-//                 key={gender.id}
-//                 style={{
-//                   backgroundColor: Colors.BACKGROUND,
-//                   color: Colors.FONT_COLOR_DARK,
-//                 }}
-//               />
-//             );
-//           })}
-//         </S.SelectPicker>
-//       </S.ContainerSelect>
-//     </S.Container>
-//   );
-// };
-
-// export default Select;

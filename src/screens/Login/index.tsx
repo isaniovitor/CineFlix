@@ -16,7 +16,7 @@ import { getListCategoryFilmsSagas } from '~/store/ducks/listCategoryFilms/sagas
 import { changeProfileAction } from '~/store/ducks/user/actions';
 
 import { FilmCategorys } from '../Home/utils/mock';
-import { validationSchema } from '../Profile/validations';
+import { validationSchema } from './validations';
 
 import * as S from './styles';
 
@@ -32,6 +32,8 @@ const Login: React.FC = () => {
   );
 
   function handleLogin(data: DataProps) {
+    console.tron.log('foi');
+
     dispatch(
       changeProfileAction(
         data.username,
@@ -39,8 +41,8 @@ const Login: React.FC = () => {
         data.password,
         data.userimage,
         data.email,
+        data.birthdate,
         data.address,
-        data.username,
         data.gender,
       ),
     );
@@ -56,7 +58,7 @@ const Login: React.FC = () => {
       userimage: '',
       birthdate: '',
       address: '',
-      gender: { id: '', name: 'a' },
+      gender: { id: '', name: '' },
     },
     validationSchema,
     onSubmit: handleLogin,

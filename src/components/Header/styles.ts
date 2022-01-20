@@ -96,7 +96,7 @@ export const IconBack = styled(Icon).attrs(({ theme }) => ({
 
 export const IconProfile = styled(Icon).attrs(({ theme }) => ({
   type: 'ionicons',
-  name: 'menu',
+  name: 'person',
   color: theme.Colors.BACKGROUND_BUTTON_WHITE,
   size: 30,
 }))`

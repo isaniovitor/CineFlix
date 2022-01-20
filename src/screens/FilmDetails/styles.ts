@@ -14,7 +14,7 @@ export const Container = styled.View`
 // hero
 export const Hero = styled.View`
   background: yellow;
-  flex: 0.4;
+  flex: 0.5;
 `;
 
 export const PosterFilm = styled.Image`
@@ -24,7 +24,7 @@ export const PosterFilm = styled.Image`
 
 // descrition
 export const Description = styled.View`
-  flex: 0.4;
+  flex: 0.8;
 `;
 
 export const FilmName = styled(Text).attrs(({ theme }) => ({

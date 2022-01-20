@@ -28,7 +28,7 @@ export function Header({
   options,
 }: HeaderProps) {
   const dispatch = useDispatch();
-  // const { userimage } = useSelector((state: AplicationState) => state.user);
+  const { userimage } = useSelector((state: AplicationState) => state.user);
 
   return (
     <Sty.Container headerMenu={headerMenu}>
@@ -67,7 +67,11 @@ export function Header({
           {options?.iconProfile && (
             <>
               <Sty.ButtonLeft onPress={() => options.iconProfileAction()}>
-                <Sty.IconProfile />
+                {userimage ? (
+                  <Sty.ImageProfile source={{ uri: userimage }} />
+                ) : (
+                  <Sty.IconProfile />
+                )}
               </Sty.ButtonLeft>
               <Sty.InputContainer>
                 <Input

@@ -34,6 +34,9 @@ const Home: React.FC = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
   const [visible, setVisible] = useState(false);
+  const [loadingCategory, setLoadingCategory] = useState<
+    FilmCategoryProps | undefined
+  >();
   const [popularFilms, setPopularFilms] = useState<FilmProps[] | []>([]);
   const [popularFilmsImages, setPopularFilmsImages] = useState<string[] | []>(
     [],
@@ -52,7 +55,6 @@ const Home: React.FC = () => {
     listCategoryFilmsProps[] | []
   >(listCategoryFilms);
 
-  console.tron.log('filmCategory', filmCategory);
   const handleProfile = useCallback(() => {
     navigation.navigate(PROFILE_SCREEN);
   }, [navigation]);
@@ -65,6 +67,7 @@ const Home: React.FC = () => {
     setVisible(true);
   }
 
+  console.tron.log('categoryToLoad', loadingCategory);
   function getFilms(page: number, category: FilmCategoryProps) {
     const action = {
       list: listCategoryFilms,
@@ -77,6 +80,7 @@ const Home: React.FC = () => {
       },
     };
 
+    setLoadingCategory(category);
     getListCategoryFilmsSagas(action);
   }
 
@@ -150,10 +154,11 @@ const Home: React.FC = () => {
       {listFilms.length > 0 ? (
         <FlatList
           key="_"
-          numColumns={3}
+          numColumns={4}
           style={{ padding: 20 }}
           contentContainerStyle={{
             alignItems: 'center',
+            justifyContent: 'space-evenly',
           }}
           data={listFilms}
           extraData={listFilms}
@@ -185,6 +190,8 @@ const Home: React.FC = () => {
           renderItem={category => (
             <Category
               CurrentCategory={category.item}
+              categoryToLoad={loadingCategory}
+              setCategoryToLoad={setLoadingCategory}
               onRefre={getFilms}
               OnPressFilm={handleDetails}
             />

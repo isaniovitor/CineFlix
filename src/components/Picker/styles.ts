@@ -29,9 +29,11 @@ export const Button = styled.TouchableOpacity`
 
   width: 100%;
   padding: 20px;
+  margin: 2px;
 
   border-radius: 5px;
-  border: 1px solid black;
+
+  /* border: 1px solid black; */
 `;
 
 export const TextButton = styled(Text).attrs(({ theme }) => ({

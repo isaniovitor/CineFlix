@@ -1,8 +1,4 @@
-import { all, takeLatest, call, put, select } from 'redux-saga/effects';
-
-import type { AplicationState } from '~/@types/entities/AplicationState';
 import type { listCategoryFilmsProps } from '~/@types/entities/listCategoryFilms';
-import { searchFilms } from '~/services/film';
 import request from '~/services/request';
 import store from '~/store';
 
@@ -10,8 +6,6 @@ import {
   getListCategoryFilmsErrorAction,
   getListCategoryFilmsSuccessAction,
 } from './actions';
-import type { GetListCategoryFilmsProps } from './types';
-import { listCategoryFilmsTypes } from './types';
 
 export interface ResponseGenerator {
   config?: any;
@@ -64,12 +58,3 @@ export async function getListCategoryFilmsSagas(action: any) {
     store.dispatch(getListCategoryFilmsErrorAction());
   }
 }
-
-// export default function* watchSaga() {
-//   yield all([
-//     takeLatest(
-//       listCategoryFilmsTypes.GET_LISTCATEGORYFILMS,
-//       getListCategoryFilmsSagas,
-//     ),
-//   ]);
-// }

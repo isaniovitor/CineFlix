@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/core';
 import React, { useEffect } from 'react';
+import { Text } from 'react-native';
 
 import Button from '~/components/Button';
 
@@ -12,10 +13,6 @@ const FilmDetails: React.FC = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const { currentFilm }: FilmProps = route.params;
-
-  function handleWatchMovie() {
-    // ??
-  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -54,9 +51,6 @@ const FilmDetails: React.FC = () => {
         </S.NumbersConteiner>
         <S.overview>{currentFilm.overview}</S.overview>
       </S.Description>
-      <S.Recommendations>
-        <Button label="Assitir" actionBtn={() => handleWatchMovie()} />
-      </S.Recommendations>
     </S.Container>
   );
 };

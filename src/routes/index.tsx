@@ -27,7 +27,6 @@ function RootStack() {
   const { theme } = useSelector((state: AplicationState) => state.theme);
 
   return (
-    // creteTheme?
     <ThemeProvider theme={createTheme(theme)}>
       <NavigationContainer>
         {islogged ? (

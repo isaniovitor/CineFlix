@@ -40,7 +40,7 @@ export function Picker({
             onPress={() => setShowList(!showList)}
           >
             <S.PlaceholderText>
-              {itemSelect.name || 'Selecione a categoria'}
+              {itemSelect?.name || 'Selecione a categoria'}
             </S.PlaceholderText>
             <S.IconPicker
               color={Colors.BLACK_TO_WHITE_TEXT}

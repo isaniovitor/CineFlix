@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 
 import type { FilmProps } from '~/@types/entities/Film';
-import filmBg from '~/assets/image.jpg';
+import noImage from '~/assets/no_image.jpg';
 
 import * as S from './styles';
 
@@ -21,7 +21,7 @@ const Film: React.FC<Props> = ({ CurrentFilm, handleFilm }) => {
               ? {
                   uri: `https://image.tmdb.org/t/p/original/${CurrentFilm.backdrop_path}`,
                 }
-              : filmBg
+              : noImage
           }
         />
       </View>
