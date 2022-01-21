@@ -196,7 +196,7 @@ const Profile: React.FC = () => {
               setItem={item => {
                 setFieldValue('gender', item);
               }}
-              genders={GENDERS}
+              list={GENDERS}
               disabled={false}
             />
             <S.ButtonContainer>

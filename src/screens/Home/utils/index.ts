@@ -6,13 +6,12 @@ import type { listCategoryFilmsProps } from '~/@types/entities/listCategoryFilms
 import { GET_FILMS_WITH_FILTERS, IMAGE_POSTER_URL } from '~/constants/api';
 import request from '~/services/request';
 import type { ResponseGenerator } from '~/store/ducks/film/sagas';
-import { getListCategoryFilmsSagas } from '~/store/ducks/listCategoryFilms/sagas';
+import { getListCategoryFilmsSagas } from '~/store/ducks/listCategoryFilms/utils';
 
 export function getFilms(
   page: number,
   category: FilmCategoryProps,
   listCategoryFilms: listCategoryFilmsProps[],
-  setLoadingCategory: (category: FilmCategoryProps) => void,
 ) {
   try {
     const action = {
@@ -26,7 +25,6 @@ export function getFilms(
       },
     };
 
-    setLoadingCategory(category);
     getListCategoryFilmsSagas(action);
   } catch {
     Alert.alert('Atenção:', `Ocorreu um erro ao buscar filmes`, [

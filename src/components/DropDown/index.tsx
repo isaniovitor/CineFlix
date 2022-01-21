@@ -9,18 +9,12 @@ import * as S from './styles';
 interface Props {
   itemSelect: any;
   setItem: (item: any) => void;
-  genders: any[];
+  list: any[];
   title?: string;
   disabled: boolean;
 }
 
-export function Picker({
-  itemSelect,
-  setItem,
-  genders,
-  title,
-  disabled,
-}: Props) {
+export function Picker({ itemSelect, setItem, list, title, disabled }: Props) {
   const [showList, setShowList] = useState(false);
   const { Colors } = useContext(ThemeContext);
 
@@ -51,11 +45,14 @@ export function Picker({
           </S.Touchable>
         ) : (
           <S.ShowListConteiner>
-            {genders.map(gender => {
+            {list.map(item => {
               return (
-                <S.Touchable key={gender.id} onPress={() => selectItem(gender)}>
+                <S.Touchable
+                  key={item.id || item.name}
+                  onPress={() => selectItem(item)}
+                >
                   <S.ContainerList>
-                    <S.TitleItem>{gender.name}</S.TitleItem>
+                    <S.TitleItem>{item.name}</S.TitleItem>
                   </S.ContainerList>
                 </S.Touchable>
               );

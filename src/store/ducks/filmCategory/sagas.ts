@@ -28,7 +28,6 @@ function* getFilmCategortSagas(action: GetFilmCategoryProps) {
 
     if (response.status >= 200 && response.status < 300) {
       const filmCategory = response.data.genres;
-      // console.tron.log('response', filmCategory);
 
       yield put(getFilmCategorySuccessAction(filmCategory));
     } else {

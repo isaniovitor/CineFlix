@@ -27,8 +27,6 @@ function* getBooksSagas(action: GetBooksProps) {
     );
 
     if (response.status >= 200 && response.status < 300) {
-      // const books = response.data.items;
-      // console.tron.log('response', moreBooks);
       let films = [];
       const { listFilms } = yield select(
         (state: AplicationState) => state.film,
@@ -52,5 +50,3 @@ function* getBooksSagas(action: GetBooksProps) {
 export default function* watchSaga() {
   yield all([takeLatest(FilmTypes.GET_FILMS, getBooksSagas)]);
 }
-
-// fazer um pra detalhes aq

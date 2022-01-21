@@ -12,7 +12,7 @@ import type { DataProps } from '~/@types/entities/User';
 import { GET_FILMCATEGORY, GET_FILMS_WITH_FILTERS } from '~/constants/api';
 import { HOME_SCREEN } from '~/constants/routes';
 import { getFilmCategoryAction } from '~/store/ducks/filmCategory/actions';
-import { getListCategoryFilmsSagas } from '~/store/ducks/listCategoryFilms/sagas';
+import { getListCategoryFilmsSagas } from '~/store/ducks/listCategoryFilms/utils';
 import { changeProfileAction } from '~/store/ducks/user/actions';
 
 import { validationSchema } from './validations';
@@ -31,8 +31,6 @@ const Login: React.FC = () => {
   );
 
   function handleLogin(data: DataProps) {
-    console.tron.log('foi');
-
     dispatch(
       changeProfileAction(
         data.username,
@@ -66,8 +64,9 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     dispatch(getFilmCategoryAction(GET_FILMCATEGORY, '', '', ''));
+  }, []);
 
-    // mudar aq
+  useEffect(() => {
     filmCategory.map(itemCategory => {
       const action = {
         list: listCategoryFilms,
@@ -80,7 +79,7 @@ const Login: React.FC = () => {
         },
       };
 
-      getListCategoryFilmsSagas(action);
+      return getListCategoryFilmsSagas(action);
     });
   }, []);
 

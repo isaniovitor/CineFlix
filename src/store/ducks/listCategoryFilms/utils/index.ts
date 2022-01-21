@@ -3,9 +3,9 @@ import request from '~/services/request';
 import store from '~/store';
 
 import {
-  getListCategoryFilmsErrorAction,
   getListCategoryFilmsSuccessAction,
-} from './actions';
+  getListCategoryFilmsErrorAction,
+} from '../actions';
 
 export interface ResponseGenerator {
   config?: any;
@@ -16,7 +16,6 @@ export interface ResponseGenerator {
   statusText?: string;
 }
 
-// ainda da pra usar como sagar?
 export async function getListCategoryFilmsSagas(action: any) {
   try {
     const response: ResponseGenerator = await request.get(
