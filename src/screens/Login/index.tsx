@@ -81,7 +81,7 @@ const Login: React.FC = () => {
 
       return getListCategoryFilmsSagas(action);
     });
-  }, []);
+  }, [filmCategory]);
 
   return (
     <KeyboardAvoidingView
