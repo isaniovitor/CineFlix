@@ -32,8 +32,6 @@
   </p>
 </div>
 
-[Documentation](https://example.com)
-
 
 
 <!-- ABOUT THE PROJECT -->
