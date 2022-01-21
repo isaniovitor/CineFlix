@@ -43,7 +43,6 @@
    <img src="src/assets/home.png" alt="Logo" width="200" height="360">
    <img src="src/assets/homeScreen.png" alt="Logo" width="200" height="360">
    <img src="src/assets/searchFilm.png" alt="Logo" width="200" height="360">
-   <img src="src/assets/profile.png" alt="Logo" width="200" height="360">
 </div>
 
 
