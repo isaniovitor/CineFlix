@@ -22,7 +22,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="src/assets/no_image.jpg" alt="Logo" width="80" height="80">
+    <img src="https://media.istockphoto.com/vectors/cartoon-popcorn-in-paper-bucket-box-vector-id1055623088" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">CineFlix</h3>
