@@ -13,7 +13,11 @@ interface CategoryProps {
   CurrentCategory: listCategoryFilmsProps;
   categoryToLoad: FilmCategoryProps | undefined;
   setCategoryToLoad: (category: FilmCategoryProps | undefined) => void;
-  onRefre: (page: number, category: FilmCategoryProps) => void;
+  onRefre: (
+    page: number,
+    category: FilmCategoryProps,
+    setLoadingCategory: (category: FilmCategoryProps) => void,
+  ) => void;
   OnPressFilm: (item: FilmProps) => void;
 }
 
@@ -58,12 +62,20 @@ const Category: React.FC<CategoryProps> = ({
         onRefresh={() => {
           setLoading(false);
           setCategoryToLoad(undefined);
-          onRefre(CurrentCategory.currentPage + 1, CurrentCategory.category);
+          onRefre(
+            CurrentCategory.currentPage + 1,
+            CurrentCategory.category,
+            setCategoryToLoad,
+          );
         }}
         onEndReached={() => {
           setLoading(false);
           setCategoryToLoad(undefined);
-          onRefre(CurrentCategory.currentPage + 1, CurrentCategory.category);
+          onRefre(
+            CurrentCategory.currentPage + 1,
+            CurrentCategory.category,
+            setCategoryToLoad,
+          );
         }}
         onEndReachedThreshold={0.1}
       />

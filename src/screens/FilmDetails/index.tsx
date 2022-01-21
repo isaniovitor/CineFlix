@@ -5,7 +5,7 @@ import { Text } from 'react-native';
 import Button from '~/components/Button';
 
 import type { FilmProps } from '~/@types/entities/Film';
-import filmBg from '~/assets/image.jpg';
+import noImage from '~/assets/no_image.jpg';
 
 import * as S from './styles';
 
@@ -29,7 +29,7 @@ const FilmDetails: React.FC = () => {
               ? {
                   uri: `https://image.tmdb.org/t/p/original/${currentFilm.backdrop_path}`,
                 }
-              : filmBg
+              : noImage
           }
         />
       </S.Hero>

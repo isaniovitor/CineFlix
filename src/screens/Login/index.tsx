@@ -15,7 +15,6 @@ import { getFilmCategoryAction } from '~/store/ducks/filmCategory/actions';
 import { getListCategoryFilmsSagas } from '~/store/ducks/listCategoryFilms/sagas';
 import { changeProfileAction } from '~/store/ducks/user/actions';
 
-import { FilmCategorys } from '../Home/utils/mock';
 import { validationSchema } from './validations';
 
 import * as S from './styles';
@@ -69,7 +68,7 @@ const Login: React.FC = () => {
     dispatch(getFilmCategoryAction(GET_FILMCATEGORY, '', '', ''));
 
     // mudar aq
-    FilmCategorys.map(itemCategory => {
+    filmCategory.map(itemCategory => {
       const action = {
         list: listCategoryFilms,
         payload: {

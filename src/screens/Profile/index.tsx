@@ -18,6 +18,7 @@ import { HOME_SCREEN, LOGIN_SCREEN } from '~/constants/routes';
 import { getListCategoryFilmsSuccessAction } from '~/store/ducks/listCategoryFilms/actions';
 import { changeProfileAction, logoutAction } from '~/store/ducks/user/actions';
 
+import { pickImage, selectImage } from './utils';
 import { validationSchema } from './validations';
 
 import * as S from './styles';
@@ -45,8 +46,8 @@ const Profile: React.FC = () => {
         data.password,
         data.userimage,
         data.email,
+        data.birthdate,
         data.address,
-        data.username,
         data.gender,
       ),
     );
@@ -70,6 +71,23 @@ const Profile: React.FC = () => {
       validateOnChange: false,
     });
 
+  function showModal() {
+    setVisible(true);
+  }
+
+  function handlePickImage() {
+    pickImage(setFieldValue, setVisible);
+  }
+
+  function handleSelectImage() {
+    selectImage(setFieldValue, setVisible);
+  }
+
+  function logout() {
+    dispatch(getListCategoryFilmsSuccessAction([]));
+    dispatch(logoutAction());
+  }
+
   useEffect(() => {
     navigation.setOptions({
       enableNavigation: true,
@@ -92,44 +110,6 @@ const Profile: React.FC = () => {
     })();
   }, []);
 
-  const pickImage = async () => {
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setFieldValue('userimage', result.uri);
-    }
-    setVisible(false);
-  };
-
-  const selectImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setFieldValue('userimage', result.uri);
-    }
-
-    setVisible(false);
-  };
-
-  function showModal() {
-    setVisible(true);
-  }
-
-  function logout() {
-    dispatch(getListCategoryFilmsSuccessAction([]));
-    dispatch(logoutAction());
-  }
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -144,8 +124,8 @@ const Profile: React.FC = () => {
               setVisible={setVisible}
               labelButtonLeft="Tirar foto"
               labelButtonRight="Galeria"
-              actionButtonLeft={pickImage}
-              actionButtonRight={selectImage}
+              actionButtonLeft={handlePickImage}
+              actionButtonRight={handleSelectImage}
             />
             {values.userimage ? (
               <S.Image source={{ uri: values.userimage }} />

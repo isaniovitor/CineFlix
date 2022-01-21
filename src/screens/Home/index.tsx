@@ -11,21 +11,14 @@ import type { AplicationState } from '~/@types/entities/AplicationState';
 import type { FilmProps } from '~/@types/entities/Film';
 import type { FilmCategoryProps } from '~/@types/entities/FilmCategory';
 import type { listCategoryFilmsProps } from '~/@types/entities/listCategoryFilms';
-import {
-  GET_FILMS_WITH_FILTERS,
-  IMAGE_POSTER_URL,
-  SEARCH_FILMS,
-} from '~/constants/api';
+import { SEARCH_FILMS } from '~/constants/api';
 import { FILM_DETAILS_SCREEN, PROFILE_SCREEN } from '~/constants/routes';
-import request from '~/services/request';
 import {
   getFilmsAction,
   getFilmsSuccessAction,
 } from '~/store/ducks/film/actions';
-import type { ResponseGenerator } from '~/store/ducks/film/sagas';
-import { getListCategoryFilmsSagas } from '~/store/ducks/listCategoryFilms/sagas';
 
-import { FilmCategorys } from './utils/mock';
+import { getPopular, filter, getFilms } from './utils';
 
 import * as S from './styles';
 
@@ -34,23 +27,23 @@ const Home: React.FC = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
   const [visible, setVisible] = useState(false);
-  const [loadingCategory, setLoadingCategory] = useState<
-    FilmCategoryProps | undefined
-  >();
   const [popularFilms, setPopularFilms] = useState<FilmProps[] | []>([]);
-  const [popularFilmsImages, setPopularFilmsImages] = useState<string[] | []>(
-    [],
-  );
-  const [listCategoryFilter, setListCategoryFilter] = useState<
-    listCategoryFilmsProps[] | []
-  >([]);
+  const { listFilms } = useSelector((state: AplicationState) => state.film);
   const { filmCategory } = useSelector(
     (state: AplicationState) => state.filmCategory,
   );
-  const { listFilms } = useSelector((state: AplicationState) => state.film);
   const { listCategoryFilms, loadingFilm } = useSelector(
     (state: AplicationState) => state.listCategoryFilms,
   );
+  const [popularFilmsImages, setPopularFilmsImages] = useState<string[] | []>(
+    [],
+  );
+  const [loadingCategory, setLoadingCategory] = useState<
+    FilmCategoryProps | undefined
+  >();
+  const [listCategoryFilter, setListCategoryFilter] = useState<
+    listCategoryFilmsProps[] | []
+  >([]);
   const [currentListCategoryFilms, setCurrentListCategoryFilms] = useState<
     listCategoryFilmsProps[] | []
   >(listCategoryFilms);
@@ -67,64 +60,23 @@ const Home: React.FC = () => {
     setVisible(true);
   }
 
-  console.tron.log('categoryToLoad', loadingCategory);
-  function getFilms(page: number, category: FilmCategoryProps) {
-    const action = {
-      list: listCategoryFilms,
-      payload: {
-        path: GET_FILMS_WITH_FILTERS,
-        query: '',
-        filter: `with_genres=${category.id}`,
-        index: page,
-        category,
-      },
-    };
-
-    setLoadingCategory(category);
-    getListCategoryFilmsSagas(action);
-  }
-
+  // console.tron.log('categoryToLoad', loadingCategory);
   function filterCategory(category: FilmCategoryProps) {
-    const newListCategoryFilter = listCategoryFilter;
-    const listCategory = listCategoryFilms.find(
-      CategoryFilms => CategoryFilms.category.id === category.id,
+    filter(
+      category,
+      listCategoryFilter,
+      listCategoryFilms,
+      setCurrentListCategoryFilms,
+      setListCategoryFilter,
     );
-
-    if (newListCategoryFilter.includes(listCategory)) {
-      newListCategoryFilter.pop(listCategory);
-    } else {
-      newListCategoryFilter.push(listCategory);
-    }
-
-    // useeffect?
-    if (listCategoryFilter.length > 0) {
-      setCurrentListCategoryFilms(listCategoryFilter);
-    } else {
-      setCurrentListCategoryFilms(listCategoryFilms);
-    }
-
-    setListCategoryFilter(newListCategoryFilter);
   }
 
-  async function getPopular() {
-    try {
-      const urlImages: string[] = [];
-      const response: ResponseGenerator = await request.get(
-        'movie/popular',
-        '',
-        '',
-        1,
-      );
-
-      response.data.results.map(film =>
-        urlImages.push(`${IMAGE_POSTER_URL}${film.backdrop_path}`),
-      );
-
-      setPopularFilmsImages(urlImages);
-      setPopularFilms(response.data.results);
-    } catch {
-      console.tron.log('deu ruim');
-    }
+  function getFilmsCategory(
+    page: number,
+    category: FilmCategoryProps,
+    setLoading: (category: FilmCategoryProps) => void,
+  ) {
+    getFilms(page, category, listCategoryFilms, setLoading);
   }
 
   const handleSearchBooks = useCallback(async () => {
@@ -146,7 +98,7 @@ const Home: React.FC = () => {
   }, [navigation, handleProfile, search, handleSearchBooks]);
 
   useEffect(() => {
-    getPopular();
+    getPopular(setPopularFilmsImages, setPopularFilms);
   }, []);
 
   return (
@@ -192,7 +144,7 @@ const Home: React.FC = () => {
               CurrentCategory={category.item}
               categoryToLoad={loadingCategory}
               setCategoryToLoad={setLoadingCategory}
-              onRefre={getFilms}
+              onRefre={getFilmsCategory}
               OnPressFilm={handleDetails}
             />
           )}
